@@ -1,115 +1,104 @@
-<h1 align="center">Research Equipment for Claude Code</h1>
+# Research Equipment for Claude Code
 
-<p align="center">
-  <strong>The open-source research equipment scheduling desk that is just a database and Claude Code.</strong>
-</p>
+Own the equipment booking desk: reservations, training evidence, maintenance holds and actual usage in one database.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free MIT code. Install and operate it yourself. | Your equipment rules, reports, records and connections. | Installed and operated through Omni by Enterprise DNA. |
+| [Quick start](#quick-start) | One setup fee, then a retainer. [Build our version](https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=qreserve) | One setup fee, then a retainer. [Talk to Sam](https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=qreserve) |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your QReserve data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=qreserve">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/qreserve?utm_source=github&utm_medium=readme&utm_campaign=qreserve">How it works</a></td>
-  </tr>
-</table>
+## The annual bill
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-qreserve">Instead of QReserve</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Research Equipment for Claude Code does the job you pay QReserve for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the QReserve dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays QReserve per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=qreserve).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+[QReserve Premium](https://get.qreserve.com/pricing) lists US$10,000 per year, checked 26 October 2026. Core is US$3,000 and Standard is US$6,000 per year. Enterprise is quoted privately. This project addresses the internal research facility scheduling desk. It is independent of QReserve and does not reproduce every platform feature. Compare the work you actually use with your own contract.
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later. PGlite runs locally without a database server; Postgres 15 or later supports a shared deployment.
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/research-equipment-for-claude-code.git
 cd research-equipment-for-claude-code
 npm install
+npm test
 npm run demo
+npm run view
+npm run docs
+node scripts/facility.mjs help
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The demo is fictional. Its dates are relative to the first seed. An overdue spectrometer service, expired cytometer training and an unreported microscope session make the weekly review concrete. Seeding is idempotent and refuses a remote working database. For an empty working database run only npm run migrate. DATA_DIR selects an embedded database; DATABASE_URL selects Postgres.
 
-### Use it with your own Postgres or Supabase
+## The facility's week
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+32 CLI commands and 34 agent recipes. Claude Code, Codex, OpenCode and Cursor use the same files.
 
-## The commands
+- /lab-week lists requested and approved sessions in the next seven days.
+- /training-due lists recorded training that has expired, been revoked or is due within thirty days. /compliance also finds bookings with no training at all.
+- /maintenance-board lists equipment holds and their owners.
+- /usage-review compares booked and actual time for completed sessions.
+- /charge-review groups internal usage estimates by project and currency.
+- /weekly-review writes an internal draft from the week, attention and usage reports.
+- /draft-booking-brief creates a local brief. Nothing sends.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+Every CLI command supports --json. Codes match without case sensitivity, unique ID prefixes work, and partial names list candidates and exit 1 when ambiguous. All timestamps require explicit UTC offsets. Stored and displayed dates use UTC; convert local daylight-saving times before entry. [Full command reference](docs/cli.md).
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Approval has a reason
 
-## Instead of QReserve
+A booking starts requested. Approval checks equipment review, active equipment and operator, training coverage for the whole session, open maintenance windows and overlaps with approved reservations. Adjacent bookings are allowed. Database transactions serialize CLI mutations so two operators cannot approve conflicting slots at once.
 
-<!-- TODO(author): how to bring data across from QReserve; link docs/replace-qreserve.md -->
+Training dates are inclusive UTC calendar days. Evidence and assessor are required. Expiry periods are the facility's policy, not a statutory interval. A new hold or revoked training flags an already-approved session in /compliance; this software cannot stop the instrument. Operators check the record and physical safety before use.
 
-## Architecture
+Recording actual minutes completes an approved session and preserves the rate captured on approval. Estimates use actual minutes times the hourly rate, rounded to the nearest cent per statement. Project summaries add the rounded session estimates. Currencies stay separate. This is an internal estimate, not an invoice, tax calculation or payment system. Imported fees are source text, never assumed rates.
 
+## Bring your QReserve history
+
+Export Activity Reports > Download > Details CSV. Keep Reservation rows for single-unit equipment. Run one command after checking date formats:
+
+```bash
+node scripts/facility.mjs import qreserve examples/qreserve-details.csv --source="Example site" --actor="Migration operator" --dry-run
+node scripts/facility.mjs import qreserve examples/qreserve-details.csv --source="Example site" --actor="Migration operator"
 ```
-research-equipment-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
 
-## Built for coding agents
+The fixture uses documented column names and fictional values, not a captured customer export. Imported bookings stay historical, with the original row preserved. Source approvals never become live permission. Resource rules, identity collisions, rates and training need reconciliation; create a fresh requested booking for future work. Repeating identical rows adds no bookings; changed source rows stop for explicit reconciliation. Any invalid row rolls back the file. [Export and reconciliation guide](docs/replace-qreserve.md).
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Ten questions across your records
 
-## Contributing
+The insights command answers each on the data today. QReserve offers custom reports and scripting; these are useful combined checks, not claims that its platform cannot answer them.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+1. Which requested bookings lack current training?
+2. Which reservations overlap maintenance holds?
+3. Which approved sessions ended without usage?
+4. Which instruments used more time than booked?
+5. Which projects have recorded usage estimates by currency?
+6. Which equipment rules still need review?
+7. Which instruments have no completed usage?
+8. Which operators have expired training?
+9. Which equipment holds are overdue?
+10. Which imported bookings still need reconciliation?
 
-## Want it installed and run for you?
+## Documents and views
 
-Enterprise DNA installs Research Equipment for Claude Code for your business, migrates your QReserve data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+brand.json sets business name, logo and colours. npm run docs creates equipment booking briefs, internal usage statements and equipment training/maintenance records. npm run view creates the coming week, attention and usage reports. Generated HTML is read-only and escapes imported text. /new-view adds another report. No browser application or server is required.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=qreserve)
-- Read more: [enterprisedna.co/omni/instead-of/qreserve](https://enterprisedna.co/omni/instead-of/qreserve?utm_source=github&utm_medium=readme&utm_campaign=qreserve)
+## Your first hour: ten things to ask for
 
-## License
+1. Put our business name and colours on the reports.
+2. Show tomorrow's equipment bookings.
+3. Explain why the cytometer booking cannot be approved.
+4. Find the expired training evidence.
+5. Find the missing spectrometer service report.
+6. Record actual minutes for the overdue microscope session.
+7. Compare booked time with actual usage.
+8. Do a test import and reconcile counts against the source.
+9. Draft the facility's weekly review.
+10. Add a cost-centre field with /customise and a tested migration.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+## Operating boundaries and verification
+
+One database per business and trusted internal operators only. No researcher login, self-service booking portal, hardware control, calendar synchronisation or tenant isolation exists in this base. Actor names are supplied labels, not authenticated signatures. RLS denies untrusted roles and views use caller permissions, but the owner can bypass application checks. Protect local files, source exports, evidence, outputs and backups. Test native backup restoration before live use. JSON export supports portability; it is not a tested disaster-recovery backup.
+
+[Compliance sources and exact limits](docs/compliance.md). [Why no front end](docs/why-no-front-end.md). This is not an accreditation system, instrument interlock or certification of competence. No email, publishing, source-system mutation or payment operation exists.
+
+npm test uses disposable data and exercises every command, conflicts, expired and revoked training, maintenance holds, inactive operators, rate snapshots, import rollback and idempotence, strict dates, CSV parsing, escaped HTML and CLI exit codes. Manual CI defines Windows/Linux Node 20/22 and Postgres checks. Local Linux results do not claim remote CI passed.
+
+MIT. QReserve is its owner's trademark. This project is not affiliated with QReserve.

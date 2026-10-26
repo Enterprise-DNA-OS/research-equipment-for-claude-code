@@ -1,0 +1,3 @@
+Reservation ID,Type,Status,Date,Date End,Resource,User,Units,Purpose,Projects,Actual Minutes,Calculated Fees
+QR-EXAMPLE-1,Reservation,approved,2026-09-15T09:00:00+12:00,2026-09-15T11:00:00+12:00,Demo imaging instrument,Demo operator,1,"Surface imaging, repeat",Coating study,125,260.42
+QR-EXAMPLE-2,Reservation,pending,2026-11-05T09:00:00+13:00,2026-11-05T10:00:00+13:00,Demo flow instrument,Demo operator,1,Count cultures,Water study,,

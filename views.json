@@ -1,13 +1,33 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Research Equipment for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Research facility week",
+    "subtitle": "UTC times. Confirm local time before equipment use.",
+    "sections": [
+      {
+        "title": "Upcoming reservations",
+        "sql": "select code,resource,person,starts_at,ends_at,status from v_booking_week where ends_at>now() and starts_at<now()+interval '7 days' and status in ('requested','approved') order by starts_at,code"
+      }
+    ]
+  },
+  {
+    "name": "attention",
+    "title": "Equipment and training checks",
     "sections": [
       {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "sql": "select reference,kind,detail from v_attention order by reference,kind"
+      }
+    ]
+  },
+  {
+    "name": "usage",
+    "title": "Booked and actual equipment time",
+    "sections": [
+      {
+        "title": "Completed sessions only",
+        "sql": "select code,resource,completed_sessions,booked_minutes,actual_minutes,variance_minutes from v_usage order by code",
+        "note": "Time totals, not a capacity utilisation percentage."
       }
     ]
   }

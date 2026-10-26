@@ -1,24 +1,11 @@
-# Why there is no front end
+# Why this desk uses commands
 
-QReserve is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+A facility coordinator needs to know which instrument is free, whose training is current and which service holds affect the week. Those answers come from booking and evidence records. This base keeps that internal desk in a database and produces read-only reports.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+A graphical calendar offers drag-and-drop changes and immediate shared visibility. A researcher portal offers independent booking, authenticated approvals and mobile access. Kiosks and hardware interlocks connect physical use to records. This base provides none of those; it runs for trusted operators and can work locally without an internet connection after installation. Agent services can still need internet access.
 
-## What you gain
+Choose this base for a coordinator-led facility where requests can be entered through the CLI. If self-service booking or instrument integration is essential, define and deliver that custom version before changing the working system. Enterprise DNA scopes those additions through Omni by Enterprise DNA.
 
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
+QReserve also offers reports, scripts, integrations and self-hosted deployment on its Enterprise plan. Ownership alone is not a claim that those options do not exist. The difference here is MIT source and a small internal workflow you can change directly.
 
-## What you give up
-
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
-
-## Who this fits
-
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep QReserve. If you need the answers more than the screens, this is cheaper, faster and yours.
-
-Installed and run for you: https://enterprisedna.co/omni/instead-of/qreserve
+https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=qreserve

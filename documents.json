@@ -1,11 +1,55 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "booking-brief",
+    "title": "Internal equipment booking brief",
+    "for_each": "select id,code from bookings where status in ('requested','approved')",
+    "file": "code",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Reservation",
+        "sql": "select code,resource,person,project,starts_at,ends_at,status from v_booking_week where id=$1",
+        "layout": "record"
+      },
+      {
+        "title": "Record checks",
+        "sql": "select rule,finding from v_compliance where subject_id=$1",
+        "note": "Booking status is not authority to operate machinery."
+      }
+    ]
+  },
+  {
+    "name": "usage-statement",
+    "title": "Internal usage estimate",
+    "for_each": "select id,code from bookings where status='completed'",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Recorded session",
+        "sql": "select code,resource,person,project,booked_minutes,actual_minutes,currency,estimated_cents from v_booking_week where id=$1",
+        "layout": "record",
+        "note": "Internal estimate only. No tax, invoice, payment or accounting entry."
+      }
+    ]
+  },
+  {
+    "name": "equipment-record",
+    "title": "Equipment training and maintenance record",
+    "for_each": "select id,code from resources",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Equipment",
+        "sql": "select code,name,location,owner,training_required,reviewed,active from resources where id=$1",
+        "layout": "record"
+      },
+      {
+        "title": "Training evidence",
+        "sql": "select p.name,c.valid_from,c.valid_until,c.evidence,c.assessor,c.revoked from credentials c join people p on p.id=c.person_id where c.resource_id=$1"
+      },
+      {
+        "title": "Maintenance holds",
+        "sql": "select starts_at,ends_at,reason,owner,evidence,closed_at from maintenance where resource_id=$1"
+      }
     ]
   }
 ]
